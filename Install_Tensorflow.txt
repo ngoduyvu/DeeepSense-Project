@@ -1,0 +1,19 @@
+conda update conda
+conda update anaconda
+conda update --all
+conda install pip
+
+https://www.tensorflow.org/install/install_windows
+conda install jupyter
+conda install matplotlib
+conda install pandas
+conda install seaborn 
+conda install numpy
+conda install scikit-learn
+conda install scikit-image
+conda install statsmodels
+conda install SciPy
+pip install spacy
+jupyter-notebook
+
+activate tensorflow
