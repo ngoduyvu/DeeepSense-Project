@@ -17,3 +17,8 @@ pip install spacy
 jupyter-notebook
 
 activate tensorflow
+
+#### Create a new environment ####
+conda create -n python27 python=2.7
+activate python27
+deactivate
