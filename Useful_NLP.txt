@@ -1,0 +1,7 @@
+###### Useful Natural Language Processing 
+http://billchambers.me/		// Useful website for Text simlarity and Data prepocessing 
+
+
+http://creativealgorithm.org/text-mining-techniques/		// Text mining and algorithm technique
+
+###### Helpful Python tutorial 
