@@ -19,11 +19,12 @@ from replacers import RepeatReplacer, RegexpReplacer
 #nltk.download('popular')
 
 # Reading data file
-
 def loading_data(file_name):
     with open(file_name, 'r') as file:
-        data = (json.loads(line) for i, line in enumerate(file.readlines()))   
+        data = (json.loads(line) for i, line in enumerate(file.readlines()))
     return data
+
+        
 
 # Classify model    
 def score_to_label(score):
@@ -37,7 +38,8 @@ def score_to_label(score):
         return 3
     if score >= 0.5:
         return 4
-    
+
+# Find the polarity of the sentiment    
 def find_sentement_score(tokenized):
     compound_sum = 0
     sentence_count = 0
@@ -62,10 +64,13 @@ def cleaning_text(sentence):
     words = [repeat.replace(i) for i in sentence.split(" ")]
     words = [regex.replace(i) for i in words]
     sentence = ' '.join(words)
-    sentence = [spell(i) for i in sentence.split(" ")]
+    words = [spell(i) for i in sentence.split(" ")]
     sentence = ' '.join(words)
-    sentence = [s for s in sentence if s not in string.punctuation]
-    return ''.join(sentence)
+    sentence = re.sub('<[^>]*>','',sentence)
+    smileys = re.findall('((?::|;|=)(?:-?)(?:[D|d|)|(|P|p|/|x|X]))',sentence)
+    sentence = re.sub('[\W]+',' ',sentence.lower())
+    sentence += ' '.join(smileys).replace('-','')
+    return sentence
 
 
 # Saving the data after process
@@ -80,11 +85,11 @@ def main():
     for review in df['reviewText']:
         data_clean = cleaning_text(review)
         data_label = find_sentement_score(data_clean)
-        #classied_df[['Review Text', 'Sentiment']] = pd.Series(data_clean, data_label)
         classied_df.loc[index] = [review, data_label]
         index+=1
     save_to_csv('test_save.csv', classied_df)
     
-    
+
+
 if __name__ == "__main__":
     main()
