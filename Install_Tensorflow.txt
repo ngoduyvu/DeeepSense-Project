@@ -22,3 +22,8 @@ activate tensorflow
 conda create -n python27 python=2.7
 activate python27
 deactivate
+
+
+
+#### Connect Python with AWS ####
+https://linuxacademy.com/howtoguides/posts/show/topic/14209-automating-aws-with-python-and-boto3
