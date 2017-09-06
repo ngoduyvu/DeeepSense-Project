@@ -8,7 +8,8 @@ https://r2rt.com/recurrent-neural-networks-in-tensorflow-i.html
 https://medium.com/@erikhallstrm/hello-world-rnn-83cd7105b767
 https://github.com/nfmcclure/tensorflow_cookbook
 
-
+###### Tutorial Tensorflow ######
+https://github.com/sjchoi86/tensorflow-101/blob/master/notebooks/rnn_mnist_simple.ipynb
 
 ###### NLP using R ######
 http://cfss.uchicago.edu/syllabus.html
