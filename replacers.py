@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+
+"""
+Created on Thu Aug 25 09:06:33 2017
+Author: Ngo Duy Vu
+Project:DeeepSense customer review
+    
+Replace and correct word function
+"""
+
 import re
 from nltk.corpus import wordnet
 
@@ -35,3 +44,6 @@ class RepeatReplacer(object):
             return self.replace(repl_word)
         else:
             return repl_word
+    
+            
+        
