@@ -7,6 +7,8 @@ http://creativealgorithm.org/text-mining-techniques/		// Text mining and algorit
 https://r2rt.com/recurrent-neural-networks-in-tensorflow-i.html
 https://medium.com/@erikhallstrm/hello-world-rnn-83cd7105b767
 https://github.com/nfmcclure/tensorflow_cookbook
+https://github.com/sjchoi86/Tensorflow-101
+http://karpathy.github.io/2015/05/21/rnn-effectiveness/
 
 ###### Tutorial Tensorflow ######
 https://github.com/sjchoi86/tensorflow-101/blob/master/notebooks/rnn_mnist_simple.ipynb
