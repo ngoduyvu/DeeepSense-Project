@@ -7,8 +7,8 @@ Read data and output sentiment
 """
 # Import necessary library
 import re
-import json
 import pandas as pd
+from csv import DictReader
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from autocorrect import spell
 from replacers import RepeatReplacer, RegexpReplacer
@@ -16,16 +16,14 @@ from tfidf import find_idf
 from fakedetect import opinion_spam_classify
 
 
-## Download necessary package of 
-#nltk.download('popular')
+# Download necessary package of 
+##nltk.download('popular')
 
-def loading_data(file_name):
-    """ Loading data from JSON format """
-    with open(file_name, 'r') as file:
-        data = (json.loads(line) for i, line in enumerate(file.readlines()))
-    return data
-
-        
+def column_to_list(fileName, columnName):
+    """ Loading the columns of the file and store it into list """
+    with open(fileName) as f:
+        listData = [column[columnName] for column in DictReader(f)]
+    return listData
 
 # Classify model    
 def score_to_label(score):
@@ -71,8 +69,9 @@ def cleaning_text(sentence):
     words = [repeat.replace(i) for i in sentence.split(" ")]
     words = [regex.replace(i) for i in words]
     sentence = ' '.join(words)
-    words = [spell(i) for i in sentence.split(" ")]
-    sentence = ' '.join(words)
+    #words = [spell(i) for i in sentence.split(" ")]
+    #sentence = ' '.join(words)
+    # Find all emoji symbol in the text
     sentence = re.sub('<[^>]*>','',sentence)
     smileys = re.findall('((?::|;|=)(?:-?)(?:[D|d|)|(|P|p|/|x|X]))',sentence)
     sentence = re.sub('[\W]+',' ',sentence)
@@ -81,36 +80,54 @@ def cleaning_text(sentence):
 
 
 # Saving the data after process
-def save_to_csv(save_name, data):
+def save_to_csv(save_name, data, batchSize, counter):
     """ Saving the produced data """
-    data.to_csv(save_name, sep=',', encoding='utf-8')
+    data = data[['Asin', 'Overall', 'ReviewText', 'KeyWord', 'Length', 'SentimentLabel', 'Polarity',
+                'Similarity', 'Truthful', 'Deceptive', 'Helpfull', 'Unhelpfull']]
+    #data.to_csv(save_name, sep=',', encoding='utf-8')
+    if counter == 0:
+        data.to_csv(save_name, index=False, header=True, chunksize=batchSize)
+    else:
+        data.to_csv(save_name, index=False, header=False, mode='a', chunksize=batchSize)
 
 def sentiment_analysis(dataset):
     """ Find the sentiment and polarity of the reivews """
-    index = 0
-    classied_df = pd.DataFrame(columns=['Review Text', 'Length', 'Sentiment', 'Polarity'])
+    reviewLen = []
+    polarity = []
+    sentimentLabel = []
     for review in dataset:
-        review_len = len(review)
-        data_clean = cleaning_text(review)
-        polarity = find_sentement_score(data_clean)
-        data_label = score_to_label(polarity)
-        classied_df.loc[index] = [review, review_len, data_label, abs(polarity)]
-        index+=1
-    return classied_df
-    
+        reviewLen.append(len(review))
+        setimentScore = find_sentement_score(review)
+        polarity.append(setimentScore)
+        sentimentLabel.append(score_to_label(setimentScore))
+    return [reviewLen, sentimentLabel, polarity]
+   
+def lists_to_df(reviewLen, dataLabel, polarity, similar, keyword, deception, truthful):
+    """ Convert all the result from other function from list to DataFrame """
+    df = pd.DataFrame()
+    df = df.assign(Length = reviewLen, SentimentLabel = dataLabel, Polarity = polarity)
+    df = df.assign(Similarity = similar, KeyWord = keyword)
+    df = df.assign(Truthful = truthful, Deceptive = deception)
+    return df
 
 def main():
-    #df = pd.read_csv("Data Library\Small_data.csv", error_bad_lines=False)
-    df = pd.read_csv("Small_data.csv", error_bad_lines=False)
-    new_df = sentiment_analysis(df['reviewText'])
-    similar, keyword = find_idf(df['reviewText'])
-    deceptive, truthful = opinion_spam_classify(df['reviewText'])
-    new_df['KeyWord'] = keyword
-    new_df['Similarity'] = similar
-    new_df['%Deceptive'] = deceptive
-    new_df['%Truthful'] = truthful
-    save_to_csv('file_save.csv', new_df)
-
+    newDf = pd.DataFrame()
+    counter = 0     # Check the first time function take in df to store
+    batchSize = 100
+    # Read 100 lines each time from the data source
+    for df in pd.read_csv('Big_data.csv', chunksize=batchSize, iterator=True):
+        reviewText = [cleaning_text(text) for text in df['reviewText']]
+        reviewLen, dataLabel, polarity = sentiment_analysis(reviewText)
+        similar, keyword = find_idf(reviewText)
+        deceptive, truthful = opinion_spam_classify(reviewText)
+        newDf = lists_to_df(reviewLen, dataLabel, polarity, similar, keyword, deceptive, truthful)
+        newDf = newDf.set_index(df.index)   # Matching the index everytime reading 
+        # Copy the columns of the original dataframe to the new
+        newDf[['Asin', 'ReviewText', 'Overall', 'Helpfull', 'Unhelpfull']] = df[["asin", 
+            "reviewText", "overall", "Helpfull", "Unhelpfull"]]
+        save_to_csv('Big_file.csv', newDf, batchSize, counter)
+        counter+=1
+    del(newDf)
 
 if __name__ == "__main__":
     main()
