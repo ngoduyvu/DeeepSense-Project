@@ -24,6 +24,8 @@ activate python27
 deactivate
 
 
+#### Useful linux install ####
+sudo apt install linuxbrew-wrapper
 
 #### Connect Python with AWS ####
 https://linuxacademy.com/howtoguides/posts/show/topic/14209-automating-aws-with-python-and-boto3
