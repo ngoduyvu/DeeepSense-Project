@@ -2,6 +2,8 @@
 http://billchambers.me/     // Useful website for Text simlarity and Data prepocessing 
 https://streamhacker.com/   // Some deep structure for NLP  
 http://creativealgorithm.org/text-mining-techniques/		// Text mining and algorithm technique
+http://fjavieralba.com/basic-sentiment-analysis-with-python.html
+https://programminghistorian.org/lessons/
 
 ###### Tutorial RNN ######
 https://r2rt.com/recurrent-neural-networks-in-tensorflow-i.html
@@ -17,7 +19,8 @@ https://github.com/sjchoi86/tensorflow-101/blob/master/notebooks/rnn_mnist_simpl
 http://cfss.uchicago.edu/syllabus.html
 https://juliasilge.com/
 
-
+##### Python help #####
+https://codescracker.com/python/program/python-program-count-word-in-sentence.htm
 
 #### Huge data source ####
 https://catalog.data.gov/dataset?q=customer+review&sort=score+desc%2C+name+asc&as_sfid=AAAAAAV7yK81G5jR_YcwjpYROEXB49WBZSNA7o03WzBfCXDxAu9heT4oYNHXxhOEeZaHK5wXXg1hXvTOE-VeJk4dTBK6dz1mDRWyaq8bEJ8BZ7SY8s_ohRnnvRdLeYGtsKD1BK4%3D&as_fid=2b0f383165e38bb4036724ba467cf81b27e8957b
