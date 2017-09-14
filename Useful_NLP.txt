@@ -27,3 +27,7 @@ https://catalog.data.gov/dataset?q=customer+review&sort=score+desc%2C+name+asc&a
 
 https://github.com/caesar0301/awesome-public-datasets#machine-learning
 https://opendata.cityofnewyork.us/
+
+
+##### Code and concept of machine learning, deep learning #####
+http://www.ritchieng.com/machine-learning/deep-learning/tensorflow/deep-neural-nets/
